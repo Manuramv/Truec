@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Truecaller</string>
+    <string name="fetch_title">Fetch</string>
 </resources>
