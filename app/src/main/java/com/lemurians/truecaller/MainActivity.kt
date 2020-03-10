@@ -19,7 +19,18 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel = ViewModelProviders.of(this).get(MainViewModel::class.java)
 
+        //calling the Viewmodel to fetch the APis.
+        btnCallApi.setOnClickListener({callApis()})
+
         fetchApiDetails();
+    }
+
+    private fun callApis() {
+        mainViewModel.fetchBlogContent({
+            //sucess dismiss the progressbar
+        },{
+            //error show the error alert
+        })
     }
 
     private fun fetchApiDetails() {
