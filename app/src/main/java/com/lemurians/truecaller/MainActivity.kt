@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun fetchApiDetails() {
         mainViewModel.tenthCharLiveData.observe(this, Observer{
-            txtTenthchar.text = it
+            txtTenthchar.text = it.toString()
             Log.i(TAG, "Tenth character from the blog::"+it)
 
         })

@@ -12,8 +12,8 @@ class AppRepo {
         apiInterface = ApiClient.getApiClientInterface().create(ApiInterface::class.java)
     }
 
-    fun getBlogData(onSuccess: (ResponseBody) -> Unit, onError : (String) -> Unit){
-        apiInterface?.getBlogData()
+    fun getBlogData(type:String,onSuccess: (ResponseBody) -> Unit, onError : (String) -> Unit){
+        apiInterface?.getBlogData(type)
             ?.subscribeOn(Schedulers.io())
             ?.observeOn(AndroidSchedulers.mainThread())
             ?.subscribe({
