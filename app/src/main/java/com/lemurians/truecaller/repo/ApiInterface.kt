@@ -10,7 +10,6 @@ import retrofit2.http.Header
 interface ApiInterface {
 
     @GET(Constants.GET_BLOG_DATA)
-
     fun getBlogData() : Observable<String>
 
 }

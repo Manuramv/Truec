@@ -27,11 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun callApis() {
-        mainViewModel.fetchBlogContentForSIngleCharacter({
-            //sucess dismiss the progressbar
-        },{
-            //error show the error alert
-        })
+        mainViewModel.callNetworkParallely()
     }
 
     private fun observeData() {
@@ -44,6 +40,16 @@ class MainActivity : AppCompatActivity() {
             txtEveryTenth.text = it
             txtEveryTenth.movementMethod = ScrollingMovementMethod();
             Log.i(TAG, "List of every 10th character::"+it)
+        })
+        mainViewModel.uniqueWordCount.observe(this, Observer{
+            var s :String=""
+            it.forEach { (i,j)-> s = s+ i+"=="+j+"\n" }
+            txtWordCounter.movementMethod = ScrollingMovementMethod();
+            txtWordCounter.text = s
+
+
+
+            Log.i(TAG, "Word counters list::"+s)
         })
     }
 }

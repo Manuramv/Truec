@@ -25,18 +25,11 @@ import pl.droidsonroids.jspoon.Jspoon
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-
-
-
-
-
-
-
-
-
-
-
-
+import android.util.ArrayMap
+import com.lemurians.truecaller.Constants.REGEX_DELIMITTER
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 
 
 class MainViewModel : ViewModel() {
@@ -44,7 +37,7 @@ class MainViewModel : ViewModel() {
 
     val tenthCharLiveData = MutableLiveData<Char>()
     val listCharLiveData = MutableLiveData<String>()
-    lateinit var uniqueWordCount: LiveData<Map<String,Int>>
+    val uniqueWordCount = MutableLiveData<Map<String,Int>>()
     val appRepo = AppRepo()
 
     init {
@@ -52,37 +45,52 @@ class MainViewModel : ViewModel() {
     }
 
     //This method wil call the API to load the blog content.
-    fun fetchBlogContentForSIngleCharacter(onSuccess: () -> Unit, onError: (String) -> Unit) {
+   /* fun fetchBlogContentForSIngleCharacter(onSuccess: () -> Unit, onError: (String) -> Unit) {
         appRepo.getBlogData({ response ->
-
             Log.d(TAG,"response from retrofit:"+ response)
-
-           /* val document = Jsoup.parse(response.toString())
-
-            Log.d(TAG,"whole string:::document.allElements:::-->"+document.allElements.toString())
-
-            Log.d(TAG,"whole string:::document.allElements.html():::-->"+document.allElements.html())
-
-            Log.d(TAG,"whole string:::document.wholeText():::-->"+document.wholeText())
-
-
-            Log.d(TAG,"whole string:::document.title():::-->"+document.title())
-            Log.d(TAG,"whole string:::document.body():::-->"+document.body().allElements)
-
-            val webPage = "http://www.aboullaite.com"
-
-            val wholeContent = document.allElements.html()+document.body().html()
-            val abcd = document.wholeText()
-            //Log.d(TAG,"whole string:::"+abcd)
-*/
-
             findChar(response)
             findListOfChar(response)
             wordCounter(response)
         },{
             onError.invoke(it.toString())
         })
+    }*/
+
+
+    fun callNetworkParallely(){
+        GlobalScope.launch{
+            callFirstApi()
+            callSecondApi()
+            callThirdApi()
+        }
     }
+
+    fun callFirstApi(){
+        appRepo.getBlogData({ response ->
+            Log.d(TAG,"response from retrofit:"+ response)
+            findChar(response)
+        },{
+            //error will process later
+        })
+    }
+
+    fun callSecondApi(){
+        appRepo.getBlogData({ response ->
+            Log.d(TAG,"response from retrofit:"+ response)
+            findListOfChar(response)
+        },{
+            //error will process later
+        })
+    }
+    fun callThirdApi(){
+            appRepo.getBlogData({ response ->
+                Log.d(TAG,"response from retrofit:"+ response)
+                wordCounter(response)
+            },{
+                //error will process later
+            })
+        }
+
 
     //this method will find the 10th element from the string.
     private fun findChar(content : String) {
@@ -99,17 +107,37 @@ class MainViewModel : ViewModel() {
     //this method will find the occurence of the word.
     private fun wordCounter(content : String){
 
-        val words = "one two three four five six seven eight nine ten".split(' ')
+        val words = "one two three four five six seven eight nine ten".split(REGEX_DELIMITTER.toRegex())
         val frequenciesByFirstChar = content.split(" "). groupingBy { it }.eachCount()
 
         Log.d(TAG,"list:::"+frequenciesByFirstChar)
 
-        val occurrences = content.split("[ \\t\\n]+").filter{ it in content}
+        val wordsArr = content.split(REGEX_DELIMITTER.toRegex(RegexOption.IGNORE_CASE))
+         var arrMap :  MutableMap<String, Int>? = TreeMap<String,Int> (String.CASE_INSENSITIVE_ORDER)
+
+
+        for(word:String in wordsArr){
+            if( arrMap!=null &&   arrMap?.containsKey(word)){
+                val count  = (arrMap.get(word))?.plus(1)
+                    arrMap.put(word,count!!)
+                } else {
+                arrMap?.put(word, 1)
+            }
+        }
+
+        val occurrences = content.split("").filter{ it in content}
             .groupingBy { it }
             .eachCount()
 
-        Log.d(TAG,"occurrences:::"+occurrences)
+        uniqueWordCount.value = arrMap
 
+        Log.d(TAG,"occurrences:::"+arrMap)
+
+        //arrMap?.forEach { (key, value) -> Log.d(TAG,"key==="+key+"..value=="+value) }
+
+        for ((key, value) in arrMap!!) {
+            Log.d(TAG,"key==="+key+"..value=="+value)
+        }
 
     }
 
