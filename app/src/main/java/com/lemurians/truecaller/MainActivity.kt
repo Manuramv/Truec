@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun callApis() {
-        mainViewModel.callNetworkParallely()
+        mainViewModel.callApisParallely()
     }
 
     private fun observeData() {

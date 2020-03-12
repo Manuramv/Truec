@@ -14,17 +14,12 @@ import java.util.*
 
 class MainViewModel : ViewModel() {
     val TAG = MainViewModel::class.java.canonicalName
-
     val tenthCharLiveData = MutableLiveData<Char>()
     val listCharLiveData = MutableLiveData<String>()
     val uniqueWordCount = MutableLiveData<Map<String,Int>>()
     val appRepo = AppRepo()
     val viewModelJob  = SupervisorJob()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    init {
-
-    }
+    private val uiScope = CoroutineScope(Dispatchers.IO + viewModelJob)
 
     //This method wil call the API to load the blog content.
    /* fun fetchBlogContentForSIngleCharacter(onSuccess: () -> Unit, onError: (String) -> Unit) {
@@ -39,7 +34,7 @@ class MainViewModel : ViewModel() {
     }*/
 
 
-    fun callNetworkParallely(){
+    fun callApisParallely(){
         uiScope.launch{
             callFirstApi()
             callSecondApi()
