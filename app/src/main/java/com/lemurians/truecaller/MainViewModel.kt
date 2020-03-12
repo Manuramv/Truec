@@ -16,7 +16,7 @@ class MainViewModel : ViewModel() {
     val TAG = MainViewModel::class.java.canonicalName
     val tenthCharLiveData = MutableLiveData<Char>()
     val listCharLiveData = MutableLiveData<String>()
-    val uniqueWordCount = MutableLiveData<Map<String,Int>>()
+    val uniqueWordCount = MutableLiveData<String>()
     val appRepo = AppRepo()
     val viewModelJob  = SupervisorJob()
     private val uiScope = CoroutineScope(Dispatchers.IO + viewModelJob)
@@ -83,16 +83,8 @@ class MainViewModel : ViewModel() {
 
     //this method will find the occurence of the word.
     private fun wordCounter(content : String){
-
-        val words = "one two three four five six seven eight nine ten".split(REGEX_DELIMITTER.toRegex())
-        val frequenciesByFirstChar = content.split(" "). groupingBy { it }.eachCount()
-
-        Log.d(TAG,"list:::"+frequenciesByFirstChar)
-
         val wordsArr = content.split(REGEX_DELIMITTER.toRegex(RegexOption.IGNORE_CASE))
-         var arrMap :  MutableMap<String, Int>? = TreeMap<String,Int> (String.CASE_INSENSITIVE_ORDER)
-
-
+        var arrMap :  MutableMap<String, Int>? = TreeMap<String,Int> (String.CASE_INSENSITIVE_ORDER)
         for(word:String in wordsArr){
             if( arrMap!=null &&   arrMap?.containsKey(word)){
                 val count  = (arrMap.get(word))?.plus(1)
@@ -102,20 +94,9 @@ class MainViewModel : ViewModel() {
             }
         }
 
-        val occurrences = content.split("").filter{ it in content}
-            .groupingBy { it }
-            .eachCount()
-
-        uniqueWordCount.value = arrMap
-
-        Log.d(TAG,"occurrences:::"+arrMap)
-
-        //arrMap?.forEach { (key, value) -> Log.d(TAG,"key==="+key+"..value=="+value) }
-
-        for ((key, value) in arrMap!!) {
-            Log.d(TAG,"key==="+key+"..value=="+value)
-        }
-
+        var resString :String=""
+        arrMap?.forEach { (str,count)-> resString = resString+ str+"=="+count+"\n" }
+        uniqueWordCount.value = resString
     }
 
     override fun onCleared() {

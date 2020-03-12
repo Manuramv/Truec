@@ -1,13 +1,14 @@
 package com.lemurians.truecaller
 
-import androidx.appcompat.app.AppCompatActivity
+import android.os.Build
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.util.Log
+import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
-import android.text.method.ScrollingMovementMethod
-
 
 
 class MainActivity : AppCompatActivity() {
@@ -15,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
 
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -23,6 +25,7 @@ class MainActivity : AppCompatActivity() {
         //calling the Viewmodel to fetch the APis.
         btnCallApi.setOnClickListener({callApis()})
 
+        //this method will observe the changes and render the changes on ui.
         observeData();
     }
 
@@ -42,14 +45,9 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "List of every 10th character::"+it)
         })
         mainViewModel.uniqueWordCount.observe(this, Observer{
-            var s :String=""
-            it.forEach { (i,j)-> s = s+ i+"=="+j+"\n" }
             txtWordCounter.movementMethod = ScrollingMovementMethod();
-            txtWordCounter.text = s
-
-
-
-            Log.i(TAG, "Word counters list::"+s)
+            txtWordCounter.text = it
+            Log.i(TAG, "Word counters list::"+it)
         })
     }
 }
