@@ -11,6 +11,6 @@ interface ApiInterface {
 
     @GET(Constants.GET_BLOG_DATA)
 
-    fun getBlogData() : Observable<ResponseBody>
+    fun getBlogData() : Observable<String>
 
 }

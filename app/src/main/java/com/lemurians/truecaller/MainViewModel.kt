@@ -21,6 +21,17 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.util.stream.Collectors
 import java.util.stream.Stream
+import pl.droidsonroids.jspoon.Jspoon
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+
+
+
+
+
+
+
 
 
 
@@ -33,7 +44,6 @@ class MainViewModel : ViewModel() {
 
     val tenthCharLiveData = MutableLiveData<Char>()
     val listCharLiveData = MutableLiveData<String>()
-    val listStringLiveData = MutableLiveData<List<Char>>()
     lateinit var uniqueWordCount: LiveData<Map<String,Int>>
     val appRepo = AppRepo()
 
@@ -44,9 +54,31 @@ class MainViewModel : ViewModel() {
     //This method wil call the API to load the blog content.
     fun fetchBlogContentForSIngleCharacter(onSuccess: () -> Unit, onError: (String) -> Unit) {
         appRepo.getBlogData({ response ->
-            val document = Jsoup.parse(response.toString())
-            findChar(document.allElements.html())
-            findListOfChar(document.allElements.html())
+
+            Log.d(TAG,"response from retrofit:"+ response)
+
+           /* val document = Jsoup.parse(response.toString())
+
+            Log.d(TAG,"whole string:::document.allElements:::-->"+document.allElements.toString())
+
+            Log.d(TAG,"whole string:::document.allElements.html():::-->"+document.allElements.html())
+
+            Log.d(TAG,"whole string:::document.wholeText():::-->"+document.wholeText())
+
+
+            Log.d(TAG,"whole string:::document.title():::-->"+document.title())
+            Log.d(TAG,"whole string:::document.body():::-->"+document.body().allElements)
+
+            val webPage = "http://www.aboullaite.com"
+
+            val wholeContent = document.allElements.html()+document.body().html()
+            val abcd = document.wholeText()
+            //Log.d(TAG,"whole string:::"+abcd)
+*/
+
+            findChar(response)
+            findListOfChar(response)
+            wordCounter(response)
         },{
             onError.invoke(it.toString())
         })
@@ -62,6 +94,22 @@ class MainViewModel : ViewModel() {
     private fun findListOfChar(content : String){
         val str =content.withIndex().filter { (i, value) -> (i!=0 && i % 10 == 0) }.map { (i, value) -> value }
         listCharLiveData.value = str.toString().substring(1,str.toString().length-1)
+    }
+
+    //this method will find the occurence of the word.
+    private fun wordCounter(content : String){
+
+        val words = "one two three four five six seven eight nine ten".split(' ')
+        val frequenciesByFirstChar = content.split(" "). groupingBy { it }.eachCount()
+
+        Log.d(TAG,"list:::"+frequenciesByFirstChar)
+
+        val occurrences = content.split("[ \\t\\n]+").filter{ it in content}
+            .groupingBy { it }
+            .eachCount()
+
+        Log.d(TAG,"occurrences:::"+occurrences)
+
 
     }
 
