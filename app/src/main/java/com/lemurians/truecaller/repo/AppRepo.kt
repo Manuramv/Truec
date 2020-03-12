@@ -1,10 +1,8 @@
 package com.lemurians.truecaller.repo
 
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.internal.operators.single.SingleDoOnSuccess
 import io.reactivex.schedulers.Schedulers
-import okhttp3.Response
-import okhttp3.ResponseBody
+
 
 class AppRepo {
     var apiInterface: ApiInterface?=null
