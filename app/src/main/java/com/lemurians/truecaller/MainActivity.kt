@@ -6,6 +6,9 @@ import android.util.Log
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.activity_main.*
+import android.text.method.ScrollingMovementMethod
+
+
 
 class MainActivity : AppCompatActivity() {
     val TAG = MainActivity::class.java.canonicalName
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.listCharLiveData.observe(this, Observer{
             txtEveryTenth.text = it
+            txtEveryTenth.movementMethod = ScrollingMovementMethod();
             Log.i(TAG, "List of every 10th character::"+it)
         })
     }
