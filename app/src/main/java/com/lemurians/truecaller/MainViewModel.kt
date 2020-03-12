@@ -1,35 +1,15 @@
 package com.lemurians.truecaller
 
-import androidx.lifecycle.LiveData
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.lemurians.truecaller.repo.AppRepo
-import okhttp3.ResponseBody
-import org.jsoup.Jsoup
-import retrofit2.adapter.rxjava2.Result.response
-import android.R.string
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.util.Log
-import org.jsoup.select.Collector.collect
-
-import java.util.Arrays.asList
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import java.util.*
-import org.jsoup.select.Collector.collect
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.util.stream.Collectors
-import java.util.stream.Stream
-import pl.droidsonroids.jspoon.Jspoon
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
-import android.util.ArrayMap
 import com.lemurians.truecaller.Constants.REGEX_DELIMITTER
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.async
+import com.lemurians.truecaller.repo.AppRepo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import java.util.*
 
 
 class MainViewModel : ViewModel() {
@@ -39,6 +19,8 @@ class MainViewModel : ViewModel() {
     val listCharLiveData = MutableLiveData<String>()
     val uniqueWordCount = MutableLiveData<Map<String,Int>>()
     val appRepo = AppRepo()
+    val viewModelJob  = SupervisorJob()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     init {
 
@@ -58,7 +40,7 @@ class MainViewModel : ViewModel() {
 
 
     fun callNetworkParallely(){
-        GlobalScope.launch{
+        uiScope.launch{
             callFirstApi()
             callSecondApi()
             callThirdApi()
@@ -139,6 +121,11 @@ class MainViewModel : ViewModel() {
             Log.d(TAG,"key==="+key+"..value=="+value)
         }
 
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
     }
 
 }
