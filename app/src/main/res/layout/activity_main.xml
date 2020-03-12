@@ -7,22 +7,53 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/txt_ten_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_ten_label"
+        android:textSize="@dimen/font_label_size"
+        android:textColor="@color/blue"
+        android:layout_margin="@dimen/views_margin"
+        android:layout_marginBottom="@dimen/margin_between_label_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
         android:id="@+id/txtTenthchar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Hello Worldfnbdnfbnbdgnbnb!"
-        android:layout_margin="@dimen/views_margin"
+        android:hint="@string/hint_tenth_char"
+        android:layout_marginTop="4dp"
+        android:layout_marginLeft="@dimen/views_margin"
+        android:layout_marginRight="@dimen/views_margin"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_ten_label"
+        />
+
+
+    <TextView
+        android:id="@+id/txt_evry_ten_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_every_label"
+        android:textSize="@dimen/font_label_size"
+        android:textColor="@color/blue"
+        android:layout_margin="@dimen/views_margin"
+        android:layout_marginBottom="@dimen/margin_between_label_text"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTenthchar" />
 
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtEveryTenth"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:layout_margin="@dimen/views_margin"
+        android:hint="@string/hint_every_tenth_char"
+        android:layout_marginLeft="@dimen/views_margin"
+        android:layout_marginTop="4dp"
         android:scrollbars = "vertical"
         android:scrollbarThumbVertical="@drawable/scrollbar_style"
         android:fadeScrollbars="false"
@@ -30,14 +61,30 @@
         android:maxLines="10"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtTenthchar"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_evry_ten_label"/>
+
+    <TextView
+        android:id="@+id/txt_word_count_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_word_count_label"
+        android:textSize="@dimen/font_label_size"
+        android:textColor="@color/blue"
+        android:layout_margin="@dimen/views_margin"
+        android:layout_marginBottom="@dimen/margin_between_label_text"
+        android:layout_marginLeft="@dimen/views_margin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtEveryTenth"/>
+
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/txtWordCounter"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="@string/app_name"
-        android:layout_margin="@dimen/views_margin"
+        android:hint="@string/hint_wordcount_char"
+        android:layout_marginLeft="@dimen/views_margin"
+        android:layout_marginTop="4dp"
         android:scrollbars = "vertical"
         android:overScrollMode="always"
         android:fadeScrollbars="false"
@@ -45,7 +92,7 @@
         android:scrollbarThumbVertical="@drawable/scrollbar_style"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtEveryTenth"/>
+        app:layout_constraintTop_toBottomOf="@id/txt_word_count_label"/>
 
 
     <Button
@@ -54,8 +101,7 @@
         android:layout_height="wrap_content"
         android:text="@string/fetch_title"
         android:layout_margin="@dimen/views_margin"
-        app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
 

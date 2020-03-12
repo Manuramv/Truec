@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">Truecaller</string>
     <string name="fetch_title">Fetch</string>
+    <string name="txt_ten_label">10th Character:</string>
+    <string name="txt_every_label">Every 10th Character:</string>
+    <string name="txt_word_count_label">Word Counter:</string>
+    <string name="hint_tenth_char">10th character will display here.</string>
+    <string name="hint_every_tenth_char">Every 10th character displays here</string>
+    <string name="hint_wordcount_char">Word counts displays here.</string>
 </resources>
